@@ -14,7 +14,8 @@ int main()
     // Get the size of the array from the user
     cin >> n;
     // Get the elements of the array from the user
-    int arr[n];
+    int size = n;
+    int arr[size];
     for(int i = 0; i < n; i++){
         cin >> arr[i];
     }
