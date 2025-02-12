@@ -3,6 +3,7 @@
     "files.associations": {
         "iomanip": "cpp",
         "iostream": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "functional": "cpp"
     }
 }
