@@ -166,7 +166,7 @@ const int NUM_ELMTS = 18;
 int linearSearchID(int arr[], int numElems, int value, int &nIter);
 int binarySearchID(int arr[], int numElems, int value, int &nIter);
 void modifiedSortGPA(double array1[], int array2[], string array3[], int size);
-void modifiedSortID(int array2[], double array1[], string array3[], int size);
+void modifiedSortID(double array1[], int array2[], string array3[], int size);
 
 int main(){
 
@@ -175,17 +175,18 @@ int main(){
     string major[NUM_ELMTS]; // Original major array
     double GPA[NUM_ELMTS]; // Original GPA array
 
+    // sortedNetIDbyID is sorted by netID, and sortedMajorbyID and sortedGPAbyID are parallel arrays 
+    int sortedNetIDbyID[NUM_ELMTS]; // netID array,sorted by netID
+    string sortedMajorbyID[NUM_ELMTS]; 
+    double sortedGPAbyID[NUM_ELMTS];
+        
     // sortedGPAbyGPA is sorted by GPA, and sortedNetIDbyGPA and sortedMajorbyGPA are parallel arrays
     double sortedGPAbyGPA[NUM_ELMTS]; // GPA array, sorted by GPA
     int sortedNetIDbyGPA[NUM_ELMTS]; 
     string sortedMajorbyGPA[NUM_ELMTS]; 
 
-    // sortedNetIDbyID is sorted by netID, and sortedMajorbyID and sortedGPAbyID are parallel arrays 
-    int sortedNetIDbyID[NUM_ELMTS]; // netID array,sorted by netID
-    string sortedMajorbyID[NUM_ELMTS]; 
-    double sortedGPAbyID[NUM_ELMTS];
+    //int is for netID, double is for GPA, string is for major
 
-    
     string filename;
     ifstream file;
 
@@ -201,4 +202,104 @@ int main(){
     for(int i = 0; i < NUM_ELMTS; i++){
         file >> netID[i] >> major[i] >> GPA[i];
     }
+
+    //loop and display three choices
+    int choice;
+    do{
+        cout << "***************" << endl;
+        cout << "Menu of choices" << endl;
+        cout << "***************" << endl;
+        cout << "1 - List top n students" << endl;
+        cout << "2 - Search on a netID" << endl;
+        cout << "3 - Quit" << endl;
+        cin >> choice;
+
+        //eventually add a input validation here
+        //list top n students
+        if(choice == 1){
+            int n;
+            cout << "Enter n: ";
+            cin >> n;
+
+            //display top n students with descending GPA
+
+            //sort GPA array by GPA using modifiedSortGPA
+
+        }
+    } while(choice != 3); //exit loop
+
+
 }
+//linearSearchID means take the original array, numElems is max size, 
+//value is element we're looking for, nIter is number of itereations
+int linearSearchID(int arr[], int numElems, int value, int &nIter){
+    for(int i = 0; i < numElems; i++){
+        nIter++;
+        if(arr[i] == value){
+            return i;
+        }
+    }
+    return -1;
+}
+//given a sorted array, find the value, return index
+int binarySearchID(int arr[], int numElems, int value, int &nIter){
+    int low = 0;
+    int high = numElems - 1;
+    while(low <= high){
+        int mid = (low + high)/2;
+        nIter++;
+        if(arr[mid] == value){
+            return mid;
+        }
+        else if(arr[mid] < value){
+            low = mid + 1;
+        }
+        else {
+            high = mid - 1;
+        }
+    }
+    return -1;
+
+}
+
+//swap functon for the sorting
+void swap(double &a, double &b){
+    double temp = a;
+    a = b;
+    b = temp;
+}
+//given an arra, sort it, maintain parallelism between arr1 arr2, and arr3
+//sort it by GPA let's do a selection sort
+//array1 is GPA, array2 is netID, array3 is major
+void modifiedSortGPA(double array1[], int array2[], string array3[], int size){
+    for(int i = 0; i < size - 1; i++){
+        int minIndex = i;
+        for(int j = i + 1; j < size; j++){
+            if(array1[j] < array1[minIndex]){
+                minIndex = j;
+            }
+        }
+        //swap
+        swap(array1[i], array1[minIndex]);
+        swap(array2[i], array2[minIndex]);
+        swap(array3[i], array3[minIndex]);
+    }
+}
+
+//sort by ID, using bubble sort - maintain parallelism like above
+//array1 is GPA, array2 is netID, array3 is major
+//I swapped array1 and array2's data types from the function prototypes given
+void modifiedSortID(double array1[], int array2[], string array3[], int size){
+    for(int i = 0; i < size - 1; i++){
+        //size - 1 - i might go overbound
+        for(int j = 0; j < size - 1 - i; j++){
+            //if current element is greater than the next, swap
+            if(array2[j] > array2[j + 1]){
+                swap(array1[j], array1[j + 1]);
+                swap(array2[j], array2[j + 1]);
+                swap(array3[j], array3[j + 1]);
+            }
+        }
+    }
+}
+
