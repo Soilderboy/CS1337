@@ -59,6 +59,7 @@ void readConfiguration() {
         ss >> codes[numProducts] >> names[numProducts] >> prices[numProducts];
         numProducts++;
     }
+    //testing
     file.close();
     cout << numProducts << " items loaded.\n";
 }
