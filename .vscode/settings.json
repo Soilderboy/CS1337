@@ -6,6 +6,7 @@
         "ostream": "cpp",
         "functional": "cpp",
         "iosfwd": "cpp",
-        "system_error": "cpp"
+        "system_error": "cpp",
+        "random": "cpp"
     }
 }
