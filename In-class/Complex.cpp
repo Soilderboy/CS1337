@@ -1,45 +1,4 @@
-#ifndef COMPLEX_H
-#define COMPLEX_H
-
-
-#include <iostream>
-#include <cstdlib>
-#include <fstream>
-#include <string>
-#include <sstream>
-
-using namespace std;
-
-class Complex
-{
-        private:
-        double real, imaginary;
-
-    public:
-        Complex(double rreal=0, double imag=0);
-        Complex(string input);
-        ~Complex();
-
-        double getReal();
-        double getImaginary();
-        void setReal(double rreal);
-        void setImaginary(double imag);
-
-        // c = a + b;  instead of  c = a.add(b);
-        Complex operator+(const Complex &second) const;
-        // a += b;
-        void operator+=(const Complex &second);
-        Complex operator~();
-
-        // friend functions
-        friend istream& operator>>(istream& input, Complex &object);
-        friend ostream& operator<<(ostream& output, const Complex &object);
-};
-
-#endif // COMPLEX_H
-
-
-//#include "Complex.h" !!!! we are including the header file because we can't upload the header file in submission
+#include "Complex.h"
 
 //write the parametrized constructor
 Complex::Complex(double rreal, double imag) {
@@ -76,7 +35,6 @@ void Complex::setImaginary(double imag){
 
 //write overloaded operators for + and =+
 //we'll return complex object by value
-//return void for +=
 Complex Complex::operator+(const Complex &second) const {
   return Complex(real + second.real, imaginary + second.imaginary);
 
@@ -87,8 +45,13 @@ Complex Complex::operator+(const Complex &second) const {
   return result;
   "this" is a pointer to object that is called the function
   
- return Complex(this->real + second.real, this->imaginary + second.imaginary);
- */
+  return Complex(this->real + second.real, this->imaginary + second.imaginary);
+  */
+}
+//return void for +=
+void Complex::operator+=(const Complex &second) {
+  real += second.real;
+  imaginary += second.imaginary;
 }
 
 //return conjugate?
