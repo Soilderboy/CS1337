@@ -128,6 +128,7 @@ int main() {
     }
     while(choice != 4);
     //display transaction history
+    cout << endl;
     cout << "History of transactions" << endl;
     cout << "-----------------------" << endl;
     //record last 5 transactions
@@ -254,17 +255,15 @@ void subtractInventory(Product *products, int size, Transaction history[], int &
     //search for PLU and subtract from inventory
     for(int i = 0; i < size; i++){
         if(products[i].getPLU() == PLU){
-            int newInventory = products[i].getInventory() - amount;
-            //if not enough inventory, make it 0
-            if(newInventory < 0){
-                newInventory = 0;
-            }
-            products[i].setInventory(newInventory);
+            int currentInventory = products[i].getInventory();
+            int actualSubtracted = (amount > currentInventory) ? currentInventory : amount;
+
+            products[i].setInventory(currentInventory - actualSubtracted);
             found = true; //found PLU
 
             //log transaction
             if(transactionCount < 5){
-                history[transactionCount] = {transactionCount + 1, PLU, 2, amount};
+                history[transactionCount] = {transactionCount + 1, PLU, 2, actualSubtracted};
                 transactionCount++;
             } else{
                 //shift history to the left
@@ -272,7 +271,7 @@ void subtractInventory(Product *products, int size, Transaction history[], int &
                     history[j] = history[j + 1];
                 }
                 //add new transaction to end
-                history[4] = {transactionCount + 1, PLU, 2, amount};
+                history[4] = {transactionCount + 1, PLU, 2, actualSubtracted};
                 transactionCount++;
             }
 
