@@ -120,7 +120,6 @@ int main() {
                 displayProducts(products, size);
                 break;
             case 4:
-                cout << "Exiting" << endl;
                 break;
             default:
                 cout << "Invalid choice. Try again." << endl;
@@ -190,12 +189,12 @@ void addInventory(Product *products, int size, Transaction history[], int &trans
         cout << "PLU not found" << endl;
         return;
     }
-    while(amount <= 0){
-        cout << "Enter amount to add: ";
-        cin >> amount;
-        if(amount <= 0){
-            cout << "Amount must be > 0" << endl;
-        }
+    //return once amount is invalid
+    cout << "Enter amount to add: ";
+    cin >> amount;
+    if(amount <= 0){
+        cout << "Amount must be > 0" << endl;
+        return;
     }
     //search for PLU and add to inventory
     for(int i = 0; i < size; i++){
@@ -245,12 +244,12 @@ void subtractInventory(Product *products, int size, Transaction history[], int &
         cout << "PLU not found" << endl;
         return;
     }
-    while(amount <= 0){
-        cout << "Enter amount to subtract: ";
-        cin >> amount;
-        if(amount <= 0){
-            cout << "Amount must be > 0" << endl;
-        }
+    //return once amount is invalid
+    cout << "Enter amount to subtract: ";
+    cin >> amount;
+    if(amount <= 0){
+        cout << "Amount must be > 0" << endl;
+        return;
     }
     //search for PLU and subtract from inventory
     for(int i = 0; i < size; i++){
