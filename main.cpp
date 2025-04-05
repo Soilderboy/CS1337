@@ -256,9 +256,9 @@ void subtractInventory(Product *products, int size, Transaction history[], int &
     for(int i = 0; i < size; i++){
         if(products[i].getPLU() == PLU){
             int newInventory = products[i].getInventory() - amount;
+            //if not enough inventory, make it 0
             if(newInventory < 0){
-                cout << "Not enough inventory." << endl;
-                return;
+                newInventory = 0;
             }
             products[i].setInventory(newInventory);
             found = true; //found PLU
