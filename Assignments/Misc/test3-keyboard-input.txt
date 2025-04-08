@@ -1,8 +1,9 @@
-productData3.txt
+productData-3.txt
 1
+A002
+200
+2
 A008
-10
-A006
-27
-0
+500
 3
+4
