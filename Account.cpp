@@ -13,7 +13,8 @@ int Account::numberAccounts = 0;
 Account::Account(string nam, double bal, Date d){
     ownerName = nam;
     balance = bal;
-    accountNumber = ++numberAccounts;
+    accountNumber = 1000 + numberAccounts;
+    numberAccounts++;
     transactionHistory = nullptr; //placeholder for extra credit
     numberTransactions = 0; //placeholder for extra credit will do later
     //date_ = d; //placeholder for extra credit
