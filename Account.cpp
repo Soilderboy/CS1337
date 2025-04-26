@@ -9,8 +9,8 @@ int Account::numberAccounts = 0;
 //constructor
 //accountNumber is numberAccounts+1000 and increment numberAccounts
 //date_ is placeholder for extra credit
-
 Account::Account(string nam, double bal, Date d){
+    (void) d; //silence unused parameter warnings
     ownerName = nam;
     balance = bal;
     accountNumber = 1000 + numberAccounts;
@@ -25,12 +25,16 @@ Account::Account(string nam, double bal, Date d){
 //check if there is sufficient balance, then process withdraw and return true, otherwise no withdrawal made and return false
 //and make sure to deduct from balance if withdraw goes through
 bool Account::withdraw(double amnt, Date d){
+    (void) d;
     if(amnt > balance){
-        cout << "Withdraw not executed" << endl;
+        cout << "Insufficient balance, withdrawal not executed" << endl;
+    }
+    else if(amnt <= 0){
+        cout << "Amount cannot be negative, withdraw not executed" << endl;
     }
     else{
         balance -= amnt;
-        cout << "Withdraw executed" << endl;
+        cout << "Withdraw executed: " << endl;
         return true;
     }
     return false;
@@ -41,12 +45,13 @@ bool Account::withdraw(double amnt, Date d){
 //otherwise do not process and return false
 //if made, add to balance
 bool Account::deposit(double amnt, Date d){
+    (void) d;
     if(amnt <= 0){
-        cout << "Deposit not executed" << endl;
+        cout << "Amount cannot be negative, deposit not executed" << endl;
     }
     else{
         balance += amnt;
-        cout << "Deposit executed" << endl;
+        cout << "Deposit executed: " << endl;
         return true;
     }
     return false;

@@ -70,6 +70,7 @@ double readAmount();
 int readAccountNumber();
 
 //function prototypes for menu options
+//comments about each function are located in the function definitions if not self-explanatory
 void createRegularAccount();
 void createPremiumAccount();
 void deposit();
@@ -81,8 +82,14 @@ int main()
 {
     int choice;
     do{
+        cout << endl;
         printMenu();
         cin >> choice;
+        if(cin.fail()){
+            cin.clear(); //clear fail state
+            cin.ignore(1000, '\n');
+            choice = -1; //force invalid choice
+        }
 
         switch(choice){
             case 1:
@@ -100,27 +107,33 @@ int main()
             case 5:
                 printInfo();
                 break;
+            case 6:
+                break; //exit loop
             default:
                 cout << "Invalid choice, please try again." << endl;
         }
     } while(choice != 6);
-    //choice 6
+    //exit
+    /*
     for(int i = 0; i < numAccounts; i++){
         delete accountArray[i]; //delete all accounts (will delete if not nullptr)
         accountArray[i] = nullptr;
     }
+    */
+    //delete all accounts - will worry about this later
+    //clear leftover input
     return 0;
 }
 string readName(){
     string name;
-    cout << "Enter owner's name: ";
+    cout << "Enter owner's name: " << flush;
     cin >> name;
     return name;
 }
 
 Date readDate(){
     Date date;
-    cout << "\nEnter date, in the mm/dd/yyyy/hh format: ";
+    cout << "Enter date, in the mm/dd/yyyy/hh format: " << flush;
     int month, day, year, hour;
     char slash1, slash2, slash3; //to read slashes
     cin >> month >> slash1 >> day >> slash2 >> year >> slash3 >> hour;
@@ -130,20 +143,20 @@ Date readDate(){
 
 double readAmount(){
     double amount;
-    cout << "\nEnter amount: ";
+    cout << "Enter amount: " << flush;
     cin >> amount;
     return amount;
 }
 
 int readAccountNumber(){
     int accountNumber;
-    cout << "\nEnter account number: ";
+    cout << "Enter account number: " << flush;
     cin >> accountNumber;
     return accountNumber;
 }
 void createRegularAccount(){
     if(numAccounts >= MAX_NUM_ACCOUNTS){
-        cout << "Max number of accounts reached." << endl;
+        cout << "Max number of accounts reached, cannot add a new account" << endl;
         return;
     }
     string name;
@@ -153,16 +166,20 @@ void createRegularAccount(){
     name = readName();
     date = readDate();
     amount = readAmount();
+    if(amount < 0){
+        cout << "Amount cannot be negative, account creation not executed" << endl;
+        return;
+    }
 
     accountArray[numAccounts] = new RegularAccount(name, amount, date);
     numAccounts++;
-    cout << "Account created:" << endl;
+    cout << "Account created: " << endl;
     accountArray[numAccounts-1]->print(); //since numAccounts is incremented, we print the -1
 }
 
 void createPremiumAccount(){
     if(numAccounts >= MAX_NUM_ACCOUNTS){
-        cout << "Max number of accounts reached." << endl;
+        cout << "Max number of accounts reached, cannot add a new account" << endl;
         return;
     }
     string name;
@@ -172,10 +189,17 @@ void createPremiumAccount(){
     name = readName();
     date = readDate();
     amount = readAmount();
+    if(amount < 0){
+        cout << "Amount cannot be negative, account creation not executed" << endl;
+        return;
+    } else if(amount < PremiumAccount::getMinBalance()){
+        cout << "Insufficient amount, you need at least 1000.00 Galactic units to open a premium account" << endl;
+        return;
+    }
 
     accountArray[numAccounts] = new PremiumAccount(name, amount, date);
     numAccounts++;
-    cout << "Account created:" << endl;
+    cout << "Account created: " << endl;
     accountArray[numAccounts-1]->print(); //since numAccounts is incremented, we print the -1
 }
 
@@ -184,39 +208,55 @@ void deposit(){
     double amount;
     Date date;
 
+    //read account number, if it exists, then read date and amount
     accountNumber = readAccountNumber();
-    date = readDate();
-    amount = readAmount();
 
     for(int i = 0; i < numAccounts; i++){
         if(accountArray[i]->getAccountNumber() == accountNumber){
-            accountArray[i]->deposit(amount, date);
+            date = readDate();
+            amount = readAmount();        
+            bool success = accountArray[i]->deposit(amount, date);
+            //print out account info after deposit
+            if(success){
+                accountArray[i]->print();
+            }
             return;
         }
     }
-    cout << "Account not found." << endl;
+    //if it doesn't exist, print out error message
+    cout << "No such account" << endl;
 }
 
 void withdraw(){
     int accountNumber;
     double amount;
     Date date;
-
+    //read account number, if it exists, then read date and amount
     accountNumber = readAccountNumber();
-    date = readDate();
-    amount = readAmount();
 
     for(int i = 0; i < numAccounts; i++){
         if(accountArray[i]->getAccountNumber() == accountNumber){
-            accountArray[i]->withdraw(amount, date);
+            date = readDate();
+            amount = readAmount();
+            bool success = accountArray[i]->withdraw(amount, date);
+            //print out account info after withdraw
+            if(success){
+                accountArray[i]->print();
+            }
             return;
         }
     }
-    cout << "Account not found." << endl;
+    //if it doesn't exist, print out error message
+    cout << "No such account" << endl;
 }
+//print info for all accounts
 void printInfo(){
+    cout << "Accounts" << endl;
+    cout << "========" << endl;
+    cout << endl;
     for(int i = 0; i < numAccounts; i++){
         accountArray[i]->print();
+        cout << endl;
     }
 }
 //print menu but leave the choice for main function
@@ -224,6 +264,3 @@ void printMenu(){
     cout << "1->Create regular accnt, 2->Create premium accnt, 3->Deposit to accnt" << endl;
     cout << "4->Withdraw from accnt, 5->Print info accnts, 6->Quit" << endl;
 }
-
-
-
