@@ -17,6 +17,13 @@ bool PremiumAccount::withdraw(double amnt, Date d){
     if(balance - amnt >= MIN_BALANCE){
         balance -= amnt;
         cout << "Withdraw executed: " << endl;
+        //create a transaction struct and populate it
+        Transaction t;
+        t.date = d;
+        t.transactionType = 2; //2 for withdrawal
+        t.amount = amnt;
+        //record transaction into transactionHistory
+        recordTransaction(t);
         return true;
     }
     else{

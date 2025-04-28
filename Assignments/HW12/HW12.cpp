@@ -43,6 +43,37 @@ In main:
 call destructor for all accounts
 return 0;
 
+
+Extra credit:
+    It's a transaction history addition
+    Record when account is created, deposits, withdrawals
+    Need to implement recordTransaction and printTransactions in ACcount class
+
+    Dynamically allocate an array of Transaction structs with a size of 1 and populating it
+
+    recordTransaction(Transaction t) add t to the transactionHistory, returns void
+
+    printTransactions() accessor that prints the array of transactions and is called by main function when user chooses "print info for all accounts"
+
+Extra credit account class:
+    Account constructor will 
+        accountNumber set to numberAccounts+1000
+        numberAccounts is incremented
+        transactionHistory set to nullptr
+        numberTransactions set to zero
+        Transaction struct is statiscally created and populated 
+        recordTransaction function is called to record account creation
+        numberTransactions is incremented
+
+    Withdraw (in account)
+        Transaction struct is statiscally created and populated,
+        recordTransaction function is called to record withdraw
+        numberTransactions is incremented
+
+    Deposit (in account)
+        same logic as withdraw
+
+    Same for PremiumAccount's withdraw which will override the base class withdraw
 */
 #include "Account.h"
 #include "RegularAccount.h"
@@ -256,6 +287,11 @@ void printInfo(){
     cout << endl;
     for(int i = 0; i < numAccounts; i++){
         accountArray[i]->print();
+
+        //print out transaction history if extra credit is implemented
+        #ifdef EXTRA_CREDIT
+        accountArray[i]->printTransactions();
+        #endif
 
         //if it's the last account, don't endl
         if(i != numAccounts - 1){
