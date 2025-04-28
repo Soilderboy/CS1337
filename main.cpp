@@ -256,7 +256,11 @@ void printInfo(){
     cout << endl;
     for(int i = 0; i < numAccounts; i++){
         accountArray[i]->print();
-        cout << endl;
+
+        //if it's the last account, don't endl
+        if(i != numAccounts - 1){
+            cout << endl;
+        }
     }
 }
 //print menu but leave the choice for main function

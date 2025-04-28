@@ -16,7 +16,7 @@ bool PremiumAccount::withdraw(double amnt, Date d){
     (void) d; 
     if(balance - amnt >= MIN_BALANCE){
         balance -= amnt;
-        cout << "Withdraw executed" << endl;
+        cout << "Withdraw executed: " << endl;
         return true;
     }
     else{
